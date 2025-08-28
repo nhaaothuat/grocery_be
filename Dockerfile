@@ -1,11 +1,9 @@
-# Sử dụng JDK nhẹ
-FROM openjdk:17-jdk-slim
-
-# Đặt thư mục làm việc trong container
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copy JAR vào container
+# Copy file jar từ máy host vào container
 COPY target/*.jar app.jar
 
-# Chạy app
+EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
