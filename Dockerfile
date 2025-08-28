@@ -1,9 +1,12 @@
-FROM eclipse-temurin:17-jre-alpine
+# Stage 1: Build với Maven
+FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy file jar từ máy host vào container
-COPY target/*.jar app.jar
-
+# Stage 2: Chạy app với JDK
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
