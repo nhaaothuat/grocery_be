@@ -1,4 +1,4 @@
-package com.example.grocery_be.services;
+package com.example.grocery_be.services.jwt;
 
 import com.example.grocery_be.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
