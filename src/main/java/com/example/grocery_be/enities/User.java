@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class User implements UserDetails {
     private String password;
 
     private UserRole role ;
-    private List<CartItem> cart;
+    private List<CartItem> cart = new ArrayList<>();
 
 
     @Override

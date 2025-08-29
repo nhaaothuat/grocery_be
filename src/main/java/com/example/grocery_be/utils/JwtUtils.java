@@ -54,7 +54,7 @@ public class JwtUtils {
 
     public boolean isTokenValid(String token,UserDetails userDetails){
         final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername());
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     public String extractUsername(String token){
@@ -63,6 +63,10 @@ public class JwtUtils {
 
     public <T>T extraClaim(String token, Function<Claims,T> resolver){
         return resolver.apply(extractAllClaims(token));
+    }
+
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
     }
 
     private Claims extractAllClaims(String token){
