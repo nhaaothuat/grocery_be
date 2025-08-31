@@ -41,7 +41,7 @@ public class WebSecurityConfiguration {
                 .cors(cors -> cors.configurationSource(configurationSource()))
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/api/auth/**").permitAll()
-
+                                .requestMatchers("/sendMail").permitAll()
                         .requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.ADMIN.name())
                         .requestMatchers("/api/customer/**").hasAnyAuthority(UserRole.CUSTOMER.name())
                         .anyRequest().authenticated()

@@ -13,5 +13,5 @@ public class CartItem {
 
     private int quantity;
 
-    private long price;
+    private long totalPrice;
 }
