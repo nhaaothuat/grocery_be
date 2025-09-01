@@ -7,7 +7,7 @@ import com.example.grocery_be.mappers.ProductMapper;
 import com.example.grocery_be.repositories.CategoryRepository;
 import com.example.grocery_be.repositories.ProductRepository;
 import com.example.grocery_be.services.Cloudinary.CloudinaryService;
-import jakarta.mail.Multipart;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,31 +44,70 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getAllProducts() {
-        return null;
+        return productRepository.findAll().stream()
+                .map(productMapper::toProduct).toList();
     }
 
     @Override
     public ProductResponse getProductById(String id) {
-        return null;
+        return productRepository.findById(id).map(productMapper::toProduct)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
 
     @Override
     public ProductResponse updateProduct(String id, ProductRequest productRequest) {
-        return null;
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+
+        // 2. Validate category
+        if (productRequest.getCategoryId() != null) {
+            productRequest.getCategoryId().forEach(catId -> {
+                if (!categoryRepository.existsById(catId)) {
+                    throw new IllegalArgumentException("Category not found " + catId);
+                }
+            });
+            existingProduct.setCategoryId(productRequest.getCategoryId());
+        }
+
+        // 3. Update field (chỉ update nếu có dữ liệu mới)
+        if (productRequest.getName() != null) {
+            existingProduct.setName(productRequest.getName());
+        }
+        if (productRequest.getDescription() != null) {
+            existingProduct.setDescription(productRequest.getDescription());
+        }
+        if (productRequest.getPrice() != null) {
+            existingProduct.setPrice(productRequest.getPrice());
+        }
+        if (productRequest.isInStock()) {
+            existingProduct.setInStock(true);
+        } else {
+            existingProduct.setInStock(false);
+        }
+
+
+        // 5. Trả về DTO
+        return productMapper.toProduct(productRepository.save(existingProduct));
     }
 
     @Override
     public void deleteProduct(String id) {
-
+        productRepository.deleteById(id);
     }
 
     @Override
     public List<ProductResponse> getProductsByCategory(String categoryId) {
-        return null;
+        List<Product> products = productRepository.findByCategoryIdContaining(categoryId);
+        return products.stream()
+                .map(productMapper::toProduct)
+                .toList();
     }
 
     @Override
     public List<ProductResponse> searchProductsByName(String keyword) {
-        return null;
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(keyword);
+        return products.stream()
+                .map(productMapper::toProduct)
+                .toList();
     }
 }

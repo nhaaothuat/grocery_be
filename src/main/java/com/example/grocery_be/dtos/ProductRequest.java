@@ -8,13 +8,13 @@ import java.util.List;
 @Data
 public class ProductRequest {
 
-        private String name;
+    private String name;
 
     private String description;
 
-    private long price;
+    private Long price;
 
-    private long offerPrice;
+    private Long offerPrice;
 
 
     private List<String> categoryId = new ArrayList<>();

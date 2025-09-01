@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/admin/category")
+    @RestController
+    @RequiredArgsConstructor
+    @RequestMapping("/api/admin/category")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -34,13 +34,13 @@ public class CategoryController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable String id){
         categoryService.deleteCategory(id);
         return ResponseEntity.ok(null);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable String id,@RequestBody CategoryRequest categoryRequest){
         CategoryResponse updated = categoryService.updateCategory(id,categoryRequest);
         return ResponseEntity.ok(updated);
