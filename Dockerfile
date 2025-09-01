@@ -1,22 +1,13 @@
-# Sử dụng JDK 17 (hoặc version bạn dùng)
-FROM eclipse-temurin:17-jdk-alpine AS build
-
-# Copy source code
+# Stage 1: Build với Maven
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
+RUN mvn -B clean package -DskipTests
 
-# Build ứng dụng bằng Maven
-RUN ./mvnw -B clean package -DskipTests
-
-# Stage chạy app
+# Stage 2: Chạy app với JDK
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
-
-# Copy file jar từ stage build
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose port
 EXPOSE 8080
-
-# Lệnh chạy app
 ENTRYPOINT ["java", "-jar", "app.jar"]
