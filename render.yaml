@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: grocery-be
+    env: docker
+    plan: free   # hoặc starter/standard tuỳ nhu cầu
+    branch: main # branch bạn muốn deploy
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_OPTS
+        value: "-Xmx512m"
