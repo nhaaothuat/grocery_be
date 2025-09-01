@@ -20,15 +20,12 @@ public class Order {
     @Id
     private String id;
 
-    private String userId;
-
-    private List<CartItem> items;
-
-    private long totalPrice;
-
-    private PaymentMethod paymentMethod;
-
-    private OrderStatus status = OrderStatus.PENDING;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String userId;         // Liên kết tới User
+    private String orderCode;      // Mã đơn hàng (tạo ra để gửi PayOS)
+    private Long totalPrice;           // Số tiền thanh toán
+    private String description;    // Mô tả
+    private PaymentMethod method;         // COD, PayOS
+    private OrderStatus status;         // PENDING, SUCCESS, FAILED
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
