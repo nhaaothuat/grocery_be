@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
 
-        // 2. Validate category
+
         if (productRequest.getCategoryId() != null) {
             productRequest.getCategoryId().forEach(catId -> {
                 if (!categoryRepository.existsById(catId)) {
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setCategoryId(productRequest.getCategoryId());
         }
 
-        // 3. Update field (chỉ update nếu có dữ liệu mới)
+
         if (productRequest.getName() != null) {
             existingProduct.setName(productRequest.getName());
         }

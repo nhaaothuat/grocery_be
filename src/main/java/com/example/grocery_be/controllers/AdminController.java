@@ -29,5 +29,22 @@ public class AdminController {
         return ResponseEntity.ok(null);
     }
 
+    @GetMapping("/all")
+    public List<ProductResponse> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @GetMapping("/{id}")
+    public ProductResponse getProductById(@PathVariable String id) {
+        return productService.getProductById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ProductResponse updateProduct(
+            @PathVariable String id,
+            @RequestBody ProductRequest productRequest) {
+        return productService.updateProduct(id, productRequest);
+    }
+
 
 }
